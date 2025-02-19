@@ -14,6 +14,17 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// Enable error reporting for debugging
+if (!defined('WP_DEBUG')) {
+    define('WP_DEBUG', false);
+}
+if (!defined('WP_DEBUG_LOG')) {
+    define('WP_DEBUG_LOG', false);
+}
+if (!defined('WP_DEBUG_DISPLAY')) {
+    define('WP_DEBUG_DISPLAY', false);
+}
+
 // Define plugin constants
 define('WP_PHONE_VERIFY_VERSION', '1.0.0');
 define('WP_PHONE_VERIFY_PLUGIN_DIR', plugin_dir_path(__FILE__));
