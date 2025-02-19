@@ -18,8 +18,8 @@ class WP_Phone_Verify {
     }
 
     public function register_scripts() {
-        // Register the script first
-        wp_register_script(
+        // Register and enqueue the script
+        wp_enqueue_script(
             'wp-phone-verify',
             WP_PHONE_VERIFY_PLUGIN_URL . 'assets/js/wp-phone-verify.js',
             array('jquery'),
@@ -27,8 +27,8 @@ class WP_Phone_Verify {
             true
         );
 
-        // Register the style
-        wp_register_style(
+        // Register and enqueue the style
+        wp_enqueue_style(
             'wp-phone-verify',
             WP_PHONE_VERIFY_PLUGIN_URL . 'assets/css/wp-phone-verify.css',
             array(),
@@ -52,8 +52,8 @@ class WP_Phone_Verify {
             return;
         }
 
-        // Register admin script
-        wp_register_script(
+        // Register and enqueue admin script
+        wp_enqueue_script(
             'wp-phone-verify-admin',
             WP_PHONE_VERIFY_PLUGIN_URL . 'assets/js/wp-phone-verify-admin.js',
             array('jquery'),
@@ -61,8 +61,8 @@ class WP_Phone_Verify {
             true
         );
 
-        // Register admin style
-        wp_register_style(
+        // Register and enqueue admin style
+        wp_enqueue_style(
             'wp-phone-verify-admin',
             WP_PHONE_VERIFY_PLUGIN_URL . 'assets/css/wp-phone-verify-admin.css',
             array(),
@@ -78,9 +78,5 @@ class WP_Phone_Verify {
                 'nonce' => wp_create_nonce('wp-phone-verify-nonce')
             )
         );
-
-        // Enqueue admin scripts and styles
-        wp_enqueue_script('wp-phone-verify-admin');
-        wp_enqueue_style('wp-phone-verify-admin');
     }
 }

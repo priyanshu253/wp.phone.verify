@@ -9,7 +9,7 @@ class WP_Phone_Verify_Shortcode {
     }
 
     public function render_shortcode($atts) {
-        // Enqueue required scripts and styles
+        // Ensure scripts are enqueued when shortcode is used
         wp_enqueue_script('wp-phone-verify');
         wp_enqueue_style('wp-phone-verify');
 
@@ -30,14 +30,14 @@ class WP_Phone_Verify_Shortcode {
              data-form-id="<?php echo esc_attr($atts['form_id']); ?>">
             
             <div class="wp-phone-verify-buttons">
-                <button type="button" class="send-otp-button button">
+                <button type="button" class="send-otp-button">
                     <?php _e('Send OTP', 'wp-phone-verify'); ?>
                 </button>
             </div>
 
             <div class="wp-phone-verify-otp-section" style="display: none;">
                 <input type="text" class="otp-input" placeholder="<?php _e('Enter OTP', 'wp-phone-verify'); ?>" maxlength="6" pattern="\d{6}" title="<?php _e('Please enter 6 digits', 'wp-phone-verify'); ?>">
-                <button type="button" class="verify-otp-button button">
+                <button type="button" class="verify-otp-button" disabled>
                     <?php _e('Verify OTP', 'wp-phone-verify'); ?>
                 </button>
             </div>
@@ -51,7 +51,12 @@ class WP_Phone_Verify_Shortcode {
     public function send_otp() {
         check_ajax_referer('wp-phone-verify-nonce', 'nonce');
 
-        $phone = sanitize_text_field($_POST['phone']);
+        $phone = isset($_POST['phone']) ? sanitize_text_field($_POST['phone']) : '';
+        
+        if (empty($phone)) {
+            wp_send_json_error('Phone number is required.');
+            return;
+        }
         
         // Validate phone number format
         if (!preg_match('/^\+?[1-9]\d{1,14}$/', $phone)) {
@@ -101,8 +106,13 @@ class WP_Phone_Verify_Shortcode {
     public function verify_otp() {
         check_ajax_referer('wp-phone-verify-nonce', 'nonce');
 
-        $phone = sanitize_text_field($_POST['phone']);
-        $otp = sanitize_text_field($_POST['otp']);
+        $phone = isset($_POST['phone']) ? sanitize_text_field($_POST['phone']) : '';
+        $otp = isset($_POST['otp']) ? sanitize_text_field($_POST['otp']) : '';
+        
+        if (empty($phone) || empty($otp)) {
+            wp_send_json_error('Phone number and OTP are required.');
+            return;
+        }
         
         // Validate OTP format
         if (!preg_match('/^\d{6}$/', $otp)) {

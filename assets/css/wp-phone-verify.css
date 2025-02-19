@@ -5,6 +5,9 @@
 
 .wp-phone-verify-buttons {
     margin-bottom: 10px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
 }
 
 .wp-phone-verify-otp-section {
@@ -59,30 +62,65 @@
     box-shadow: 0 0 0 1px #0073aa;
 }
 
-.button {
-    padding: 8px 15px;
-    background-color: #0073aa;
-    color: white;
+/* Button Styles to match form submit button */
+.send-otp-button,
+.verify-otp-button {
+    background-color: #444;
     border: none;
-    border-radius: 4px;
+    border-radius: 2px;
+    color: #fff;
     cursor: pointer;
+    display: inline-block;
     font-size: 14px;
-    line-height: 1.4;
-    text-decoration: none;
-    transition: background-color 0.2s ease;
+    font-weight: 800;
+    line-height: 1.5;
+    margin: 0;
+    padding: 0.8em 2em;
+    text-shadow: none;
+    text-transform: uppercase;
+    transition: background 0.2s;
+    letter-spacing: 1px;
 }
 
-.button:hover {
-    background-color: #006291;
+.send-otp-button:hover,
+.verify-otp-button:hover {
+    background: #666;
+    color: #fff;
 }
 
-.button:disabled {
-    background-color: #ccc;
+.send-otp-button:focus,
+.verify-otp-button:focus {
+    background: #666;
+    color: #fff;
+    outline: thin dotted;
+    outline-offset: -4px;
+}
+
+.send-otp-button:active,
+.verify-otp-button:active {
+    background: #666;
+    color: #fff;
+    transform: translateY(1px);
+}
+
+.send-otp-button:disabled,
+.verify-otp-button:disabled,
+.send-otp-button[disabled],
+.verify-otp-button[disabled] {
+    opacity: 0.7;
     cursor: not-allowed;
+    background: #444 !important;
+    color: #fff !important;
 }
 
 /* Mobile Responsiveness */
 @media screen and (max-width: 480px) {
+    .wp-phone-verify-buttons {
+        display: block;
+        margin-left: 0;
+        margin-top: 10px;
+    }
+    
     .wp-phone-verify-otp-section {
         flex-direction: column;
         align-items: stretch;
@@ -92,7 +130,8 @@
         width: 100%;
     }
     
-    .button {
+    .send-otp-button,
+    .verify-otp-button {
         width: 100%;
         text-align: center;
     }

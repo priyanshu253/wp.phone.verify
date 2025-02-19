@@ -123,9 +123,15 @@ class WP_Phone_Verify_Admin {
 
         if (!current_user_can('manage_options')) {
             wp_send_json_error('Unauthorized');
+            return;
         }
 
-        $phone = sanitize_text_field($_POST['phone']);
+        $phone = isset($_POST['phone']) ? sanitize_text_field($_POST['phone']) : '';
+        
+        if (empty($phone)) {
+            wp_send_json_error('Phone number is required.');
+            return;
+        }
         
         // Generate random 6-digit OTP
         $otp = sprintf("%06d", mt_rand(100000, 999999));
@@ -139,6 +145,7 @@ class WP_Phone_Verify_Admin {
         if ($result['success']) {
             wp_send_json_success('OTP sent successfully');
         } else {
+            delete_transient('wp_phone_verify_test_otp_' . $phone);
             wp_send_json_error($result['message']);
         }
     }
@@ -148,18 +155,25 @@ class WP_Phone_Verify_Admin {
 
         if (!current_user_can('manage_options')) {
             wp_send_json_error('Unauthorized');
+            return;
         }
 
-        $phone = sanitize_text_field($_POST['phone']);
-        $otp = sanitize_text_field($_POST['otp']);
+        $phone = isset($_POST['phone']) ? sanitize_text_field($_POST['phone']) : '';
+        $otp = isset($_POST['otp']) ? sanitize_text_field($_POST['otp']) : '';
+        
+        if (empty($phone) || empty($otp)) {
+            wp_send_json_error('Phone number and OTP are required.');
+            return;
+        }
         
         $stored_otp = get_transient('wp_phone_verify_test_otp_' . $phone);
         
         if (!$stored_otp) {
             wp_send_json_error('OTP expired');
+            return;
         }
 
-        if ($otp === $stored_otp) {
+        if (hash_equals($stored_otp, $otp)) {
             delete_transient('wp_phone_verify_test_otp_' . $phone);
             wp_send_json_success('OTP verified successfully');
         } else {
@@ -167,7 +181,7 @@ class WP_Phone_Verify_Admin {
         }
     }
 
-    private function send_twilio_sms($to, $message) {
+    public function send_twilio_sms($to, $message) {
         $options = get_option($this->option_name);
         
         if (empty($options['twilio_sid']) || empty($options['twilio_auth_token']) || empty($options['twilio_phone_number'])) {
@@ -204,8 +218,9 @@ class WP_Phone_Verify_Admin {
         }
 
         $body = json_decode(wp_remote_retrieve_body($response), true);
+        $status_code = wp_remote_retrieve_response_code($response);
         
-        if (isset($body['sid'])) {
+        if ($status_code === 201 && isset($body['sid'])) {
             return array(
                 'success' => true,
                 'message' => 'SMS sent successfully'
@@ -214,7 +229,7 @@ class WP_Phone_Verify_Admin {
 
         return array(
             'success' => false,
-            'message' => isset($body['message']) ? $body['message'] : 'Unknown error'
+            'message' => isset($body['message']) ? $body['message'] : 'Error sending SMS: ' . $status_code
         );
     }
 }
