@@ -1,0 +1,99 @@
+.wp-phone-verify-container {
+    margin: 15px 0;
+    max-width: 100%;
+}
+
+.wp-phone-verify-buttons {
+    margin-bottom: 10px;
+}
+
+.wp-phone-verify-otp-section {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.wp-phone-verify-message {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 4px;
+    display: none;
+}
+
+.wp-phone-verify-message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.wp-phone-verify-message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.wp-phone-verify-error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px 0;
+}
+
+.otp-input {
+    padding: 8px;
+    width: 120px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+.otp-input:focus {
+    outline: none;
+    border-color: #0073aa;
+    box-shadow: 0 0 0 1px #0073aa;
+}
+
+.button {
+    padding: 8px 15px;
+    background-color: #0073aa;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1.4;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.button:hover {
+    background-color: #006291;
+}
+
+.button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 480px) {
+    .wp-phone-verify-otp-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .otp-input {
+        width: 100%;
+    }
+    
+    .button {
+        width: 100%;
+        text-align: center;
+    }
+}

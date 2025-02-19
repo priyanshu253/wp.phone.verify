@@ -1,0 +1,41 @@
+.twilio-test-section {
+    margin-top: 30px;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+.test-form {
+    margin-top: 15px;
+}
+
+#test-phone,
+#test-otp {
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+#verify-otp-section {
+    margin-top: 15px;
+}
+
+#test-result {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+#test-result.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+#test-result.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
